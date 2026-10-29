@@ -1,0 +1,176 @@
+---
+import Charts from './Charts.astro';
+
+const files = [
+  { name: 'energy.xvg', kind: 'xvg' },
+  { name: 'data.json', kind: 'json' },
+  { name: 'in.lammps', kind: '' },
+  { name: 'license.json', kind: '' },
+  { name: 'mask3d.tdr', kind: 'tdr' },
+  { name: 'nmos.plt', kind: '' },
+  { name: 'water.pdb', kind: 'pdb' },
+];
+const lines = [
+  '@ title "Potential Energy"',
+  '@ xaxis label "Time (ps)"',
+  '@ yaxis label "Potential (kJ/mol)"',
+  '@TYPE xy',
+  '0.0   -12480.2',
+  '0.2   -12510.8',
+  '0.4   -12495.1',
+  '0.6   -12530.4',
+  '0.8   -12522.7',
+  '1.0   -12548.0',
+];
+---
+
+<section class="page page-stage" id="product">
+  <div class="wrap">
+    <div class="stage-copy">
+      <p class="kicker">操作</p>
+      <h2>所见即所得，点击即预览。</h2>
+      <p>点开文件，曲线、结构和场就出现在旁边。</p>
+    </div>
+    <p class="op-line" aria-live="polite">
+      <span>转一下，工作台出现</span>
+      <span>打开 showcase 目录</span>
+      <span>点开 energy.xvg</span>
+      <span>切到分屏</span>
+      <span>曲线画在编辑器旁边</span>
+      <span>点开 data.json</span>
+      <span>点开 mask3d.tdr</span>
+      <span>点开 water.pdb</span>
+    </p>
+    <div class="replay" aria-hidden="true">
+      <div class="spin-mask"><i class="spin"></i></div>
+      <header class="rp-bar piece d1">
+        <strong>工作台</strong>
+        <span class="rp-grow"></span>
+        <span class="rp-user">root</span>
+        <span class="rp-btn">AI 助手</span>
+        <span class="rp-btn">退出</span>
+      </header>
+      <div class="rp-body">
+        <aside class="rp-tree piece d2">
+          <div class="rp-path">/tmp/iminlab-showcase</div>
+          <div class="rp-tools"><i></i><i></i><i></i><i></i><b>打开</b></div>
+          {files.map((file, i) => (
+            <div class:list={['rp-file', file.kind && `rp-file-${file.kind}`, { on: file.kind === 'xvg' }]} style={`--i:${i}`}>
+              {file.name}
+            </div>
+          ))}
+        </aside>
+        <div class="rp-main">
+          <div class="rp-tabs piece d3">
+            <span class="rp-tab-slot">
+              <span class="rp-tab rp-tab-xvg">energy.xvg</span>
+              <span class="rp-tab rp-tab-json">data.json</span>
+              <span class="rp-tab rp-tab-tdr">mask3d.tdr</span>
+              <span class="rp-tab rp-tab-pdb">water.pdb</span>
+            </span>
+            <span class="rp-seg"><b>文本</b><b>曲线</b><b class="split">分屏</b></span>
+            <span class="rp-btn save">保存</span>
+          </div>
+          <div class="rp-stage">
+            <div class="rp-scene xvg">
+              <div class="rp-split">
+                <div class="rp-editor">
+                  <div class="rp-gutter">
+                    {lines.map((_, i) => <span style={`--i:${i}`}>{i + 1}</span>)}
+                  </div>
+                  <div class="rp-code">
+                    {lines.map((line, i) => (
+                      <span class:list={[{ c: line.startsWith('@') }]} style={`--i:${i}`}>{line}</span>
+                    ))}
+                  </div>
+                </div>
+                <div class="rp-view">
+                  <div class="rp-plot">
+                    <span class="rp-axis y">Potential (kJ/mol)</span>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="rp-chart">
+                      <g stroke="#f0f0f0" stroke-width="1" vector-effect="non-scaling-stroke">
+                        <line x1="0" y1="0" x2="0" y2="100" />
+                        <line x1="0" y1="100" x2="100" y2="100" />
+                        <line x1="0" y1="25" x2="100" y2="25" />
+                        <line x1="0" y1="50" x2="100" y2="50" />
+                        <line x1="0" y1="75" x2="100" y2="75" />
+                        <line x1="20" y1="0" x2="20" y2="100" />
+                        <line x1="40" y1="0" x2="40" y2="100" />
+                        <line x1="60" y1="0" x2="60" y2="100" />
+                        <line x1="80" y1="0" x2="80" y2="100" />
+                      </g>
+                      <polyline
+                        class="rp-stroke"
+                        fill="none"
+                        stroke="#1677ff"
+                        stroke-width="2"
+                        vector-effect="non-scaling-stroke"
+                        points="0,12 20,48 40,33 60,71 80,62 100,92"
+                      />
+                    </svg>
+                    <span class="rp-axis x">Time (ps)</span>
+                  </div>
+                  <div class="rp-stats">
+                    <span>均值 -12514.5</span>
+                    <span>标准差 22.39</span>
+                    <span>最小 -12548</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rp-scene json">
+              <div class="rp-split">
+                <pre class="rp-plain"><span>{"{"}</span>
+<span>  "name": "showcase",</span>
+<span>  "temp": 300,</span>
+<span>  "steps": 5000</span>
+<span>{"}"}</span></pre>
+                <div class="rp-view">
+                  <div class="rp-card">
+                    <b>showcase</b>
+                    <span>temp · 300</span>
+                    <span>steps · 5000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rp-scene tdr">
+              <div class="rp-split">
+                <pre class="rp-plain"><span>mask3d.tdr</span>
+<span>geometry   3D</span>
+<span>regions    4</span>
+<span>field      potential</span></pre>
+                <div class="rp-view">
+                  <div class="rp-chart-host"><Charts kind="field" /></div>
+                </div>
+              </div>
+            </div>
+            <div class="rp-scene pdb">
+              <div class="rp-split">
+                <pre class="rp-plain"><span>HEADER    WATER</span>
+<span>COMPND    MOLECULE: WATER;</span>
+<span>ATOM      1  O   HOH A   1</span>
+<span>ATOM      2  H1  HOH A   1</span>
+<span>ATOM      3  H2  HOH A   1</span></pre>
+                <div class="rp-view">
+                  <div class="rp-chart-host"><Charts kind="atoms" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="rp-rail piece d4">
+          <h3>普通后台</h3>
+          <p>以当前用户拉起一个进程。</p>
+          <label>命令</label>
+          <div class="rp-box">echo hello && sleep 2</div>
+          <label>工作目录</label>
+          <div class="rp-box">/tmp/iminlab-showcase</div>
+          <span class="rp-btn save">运行</span>
+          <p class="rp-empty">暂无数据</p>
+        </aside>
+        <i class="rp-cursor"></i>
+      </div>
+    </div>
+  </div>
+</section>

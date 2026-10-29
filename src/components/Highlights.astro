@@ -1,0 +1,78 @@
+---
+import Charts from './Charts.astro';
+import LabFrame from './LabFrame.astro';
+import ModulePlay from './ModulePlay.astro';
+---
+
+<section class="page section">
+  <div class="wrap">
+    <article class="hl flip">
+      <div class="hl-visual">
+        <div class="mini-row">
+          <figure class="mini">
+            <div class="pane"><Charts kind="curve" /></div>
+            <figcaption><strong>曲线</strong>LAMMPS 日志、GROMACS xvg、Sentaurus .plt</figcaption>
+          </figure>
+          <figure class="mini">
+            <div class="pane"><Charts kind="atoms" /></div>
+            <figcaption><strong>三维</strong>PDB、GRO、XYZ、LAMMPS data 与轨迹</figcaption>
+          </figure>
+          <figure class="mini">
+            <div class="pane"><Charts kind="field" /></div>
+            <figcaption><strong>场分布</strong>Sentaurus .tdr 结构与场</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="hl-copy">
+        <p class="kicker">02 / 预览</p>
+        <h2>编辑器横向展开，结果就在旁边</h2>
+        <p>
+          文件树和编辑区可以拖开。打开带查看器的文件时，文本和预览各占一半，用标签在「文本」和「曲线」「3D」「场分布」之间切换。
+        </p>
+        <p>
+          LAMMPS 输入带着命令诊断。日志、轨迹和器件场不用另开一个后处理程序。
+        </p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="page section band" id="ai">
+  <div class="wrap ai-page">
+    <div class="ai-copy">
+      <p class="kicker">03 / 权限</p>
+      <h2>实时分析，操作停在你手里</h2>
+    </div>
+    <LabFrame variant="ai" />
+  </div>
+</section>
+
+<section class="page section band">
+  <div class="wrap mod-page">
+    <div class="mod-copy">
+      <p class="kicker">04 / 模块</p>
+      <h2>用自然语言写一个预览模块</h2>
+      <p>
+        其他工具,格式不支持/范围太少/没有自己需要的学科,部分常见格式还需额外开软件?
+      </p>
+      <p>
+        给AI一句"我想查看这个文件"，它会生成一个预览模块。<br>
+        无需重启,动态加载,定制化需求,随时调整<br>
+      </p>
+    </div>
+    <ModulePlay />
+  </div>
+</section>
+
+<section class="page section">
+  <div class="wrap lab-page">
+    <div class="lab-copy">
+      <p class="kicker">05 / 实验室</p>
+      <h2>不止写论文，是一个真正的实验室</h2>
+      <p>
+        右侧栏跑作业。普通后台在本机执行脚本；在集群上则是 Slurm 提交。
+      </p>
+    </div>
+    <LabFrame variant="jobs" />
+  </div>
+</section>

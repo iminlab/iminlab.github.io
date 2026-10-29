@@ -1,0 +1,118 @@
+---
+import Charts from './Charts.astro';
+
+const steps = [
+  {
+    kicker: '01 / 上下文',
+    title: '打开的文件，自动交进去',
+    text: '问当前是什么，不用把文件再贴一遍。标签里的结构、日志和曲线，助手已经看得到。',
+  },
+  {
+    kicker: '02 / 范围',
+    title: '只读边界事先划好',
+    text: '工作区里才能改。区外打开的目录只读。写盘、提交和加载，都停在你点允许之前。',
+  },
+  {
+    kicker: '03 / 协作',
+    title: '人和 AI 一起做完',
+    text: '它读懂眼前的结果，你决定保不保存、交不交作业。结论留在同一块工作台里。',
+  },
+];
+---
+
+<section class="page section">
+  <div class="wrap ask-page">
+    <div class="section-head">
+      <p class="kicker">同一块屏幕</p>
+      <h2>解决数据与AI的传递</h2>
+    </div>
+    <ol class="steps">
+      {steps.map((step) => (
+        <li class="step">
+          <p class="kicker">{step.kicker}</p>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
+    <div class="ask-stage" aria-hidden="true">
+      <div class="spin-mask"><i class="spin"></i></div>
+      <header class="ask-bar">
+        <strong>工作台</strong>
+        <span class="ask-grow"></span>
+        <span>researcher</span>
+        <span class="ask-btn">AI 助手</span>
+      </header>
+      <div class="ask-body">
+        <div class="ask-work">
+          <div class="ask-tabs">
+            <span class="ask-tab ask-tab-pdb on">lysozyme.pdb</span>
+            <span class="ask-tab ask-tab-in"><i class="ask-dirty"></i>in.lammps</span>
+            <span class="ask-spacer"></span>
+            <span class="ask-seg"><b>文本</b><b class="on">3D</b></span>
+            <span class="ask-btn ask-save">保存</span>
+          </div>
+          <div class="ask-scenes">
+            <div class="ask-scene pdb">
+              <div class="ask-split">
+                <pre class="ask-code"><span>HEADER    HYDROLASE</span>
+<span>TITLE     HEN EGG WHITE LYSOZYME</span>
+<span>COMPND    MOLECULE: LYSOZYME;</span>
+<span>ATOM      1  N   LYS A   1</span></pre>
+                <div class="ask-view">
+                  <Charts kind="atoms" />
+                </div>
+              </div>
+            </div>
+            <div class="ask-scene lmp">
+              <pre class="ask-lmp"><span class="c"># 单晶 Cu · 300 K · 单轴拉伸</span>
+<span>units      metal</span>
+<span>atom_style atomic</span>
+<span>lattice    fcc 3.615</span>
+<span>velocity   all create 300.0 1</span>
+<span>fix        1 all npt temp 300 300 0.1 y 0 0 1 z 0 0 1</span>
+<span>fix        2 all deform 1 x erate 0.001</span>
+<span>thermo     100</span>
+<span>run        50000</span></pre>
+            </div>
+          </div>
+        </div>
+        <aside class="ask-ai">
+          <header>AI 助手</header>
+          <div class="ask-log"><div class="ask-log-in">
+            <div class="ask-bubble me">当前的是什么</div>
+            <div class="ask-bubble think"><i class="spin ask-spin"></i>正在读取 lysozyme.pdb</div>
+            <div class="ask-facts">
+              <span>链 A</span>
+              <span>129 残基</span>
+              <span>水解酶</span>
+            </div>
+            <div class="ask-bubble answer">鸡蛋溶菌酶</div>
+            <div class="ask-bubble me ask-q-lmp">请帮我写一个 LAMMPS 输入文件,计算单晶 Cu 在 300 K 下的单轴拉伸应力-应变曲线并运行</div>
+            <div class="ask-bubble ask-created">已创建,请手动保存</div>
+            <div class="ask-bubble ask-job-ok">作业提交成功 作业ID 74458</div>
+            <div class="ask-bubble ask-job-query">查询作业状态 74458</div>
+            <div class="ask-bubble ask-job-run">作业 74458 运行状态正常</div>
+          </div></div>
+        </aside>
+        <div class="ask-modal">
+          <h3>提交作业</h3>
+          <p>AI 请求的身份提交 计算作业<br />原因：算单晶 Cu 在 300 K 下的单轴拉伸应力-应变曲线</p>
+          <div class="ask-fields">
+            <label>分区<span>compute</span></label>
+            <label>节点数<span>1</span></label>
+            <label>每节点任务数<span>32</span></label>
+          </div>
+          <p class="ask-hint">将执行（命令行参数会覆盖脚本中的 #SBATCH）：</p>
+          <pre class="ask-sbatch">sbatch -D ~/cu -J cu-tensile -p compute --ntasks-per-node 32 -N 1 ~/cu/in.lammps</pre>
+          <div class="ask-actions">
+            <span class="ask-btn">拒绝</span>
+            <span class="ask-btn ask-ok ask-submit">提交</span>
+          </div>
+        </div>
+        <i class="ask-cursor"></i>
+        <i class="ask-cursor ask-cursor-job"></i>
+      </div>
+    </div>
+  </div>
+</section>

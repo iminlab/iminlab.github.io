@@ -1,0 +1,179 @@
+---
+import Charts from './Charts.astro';
+
+interface Props {
+  variant?: 'overview' | 'ai' | 'jobs' | 'module';
+}
+
+const { variant = 'overview' } = Astro.props;
+const xvg = `@ title "Potential Energy"
+@ xaxis label "Time (ps)"
+@ yaxis label "Potential (kJ/mol)"
+@TYPE xy
+0.0   -12480.2
+0.2   -12510.8
+0.4   -12495.1
+0.6   -12530.4
+0.8   -12522.7
+1.0   -12548.0`;
+const lines = xvg.split('\n');
+---
+
+<div class:list={['lf', `is-${variant}`]}>
+  <div class="spin-mask" aria-hidden="true"><i class="spin"></i></div>
+  <header class="lf-bar">
+        <strong>工作台</strong>
+        <span class="lf-grow"></span>
+    <span class="lf-user">researcher</span>
+    <span class="lf-btn">AI 助手</span>
+    <span class="lf-btn">退出</span>
+  </header>
+  <div class="lf-body">
+    {variant !== 'module' && (
+      <aside class="lf-tree" aria-hidden="true">
+        <div class="lf-path">~/lj-melt</div>
+        <div class="lf-file"><i></i>in.lammps</div>
+        <div class="lf-file"><i></i>log.lammps</div>
+        <div class="lf-file active"><i></i>energy.xvg</div>
+        <div class="lf-file"><i></i>water.pdb</div>
+        <div class="lf-file"><i></i>nmos.plt</div>
+        <div class="lf-file"><i></i>mask3d.tdr</div>
+      </aside>
+    )}
+
+    {variant === 'module' ? (
+      <div class="lf-main">
+        <div class="lf-tabs">
+          <span class="lf-tab">package.json</span>
+          <span class="lf-tab on">index.js</span>
+          <span class="lf-tools">
+            <span class="lf-seg"><b>文本</b><b class="on">对比</b></span>
+            <span class="tag-new">刚加载</span>
+          </span>
+        </div>
+        <div class="mods">
+          <pre>{`{
+  "name": "energy",
+  "engines": { "iminlab": "^1" },
+  "iminlab": {
+    "libs": ["echarts"]
+  }
+}`}</pre>
+          <div class="loaded">
+            <p class="kicker">energy.xvg</p>
+            <h3 style="font-size:15px;margin-bottom:8px;">对比 <span class="tag-new">新标签</span></h3>
+            <div class="pane" style="height:180px;border:1px solid #f0f0f0;border-radius:8px;">
+              <Charts kind="curve" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div class="lf-main">
+        <div class="lf-tabs">
+          <span class="lf-tab on">
+            {variant === 'jobs' ? 'run.slurm' : variant === 'ai' ? 'in.lammps' : 'energy.xvg'}
+            {variant === 'ai' && <em class="gate-dirty">未保存</em>}
+          </span>
+          {variant !== 'jobs' && variant !== 'ai' && (
+            <span class="lf-tools">
+              <span class="lf-seg"><b>文本</b><b class="on">曲线</b></span>
+              <span class="lf-btn lf-save">保存</span>
+            </span>
+          )}
+        </div>
+        {variant === 'ai' ? (
+          <div class="lf-stage gate-stage">
+            <pre class="gate-code"><span class="c"># lj melt</span><span>units           lj</span><span>atom_style      atomic</span><span class="gate-swap"><span class="gate-old">fix 1 all nve</span><span class="gate-new">fix 1 all nvt temp 1.0 1.0 0.1</span></span><span>timestep        0.005</span><span>run             10000</span></pre>
+            <div class="gates">
+              <div class="gate"><b>修改文件</b><span class="gate-detail">NVE → NVT</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+              <div class="gate"><b>保存</b><span class="gate-detail">in.lammps</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+              <div class="gate"><b>新建</b><span class="gate-detail">run.slurm</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+              <div class="gate deny"><b>删除</b><span class="gate-detail">old.log</span><i class="gate-mark">已拒绝</i><span class="gate-actions"><em class="no">拒绝<i class="gate-dot"></i></em><em class="yes">允许</em></span></div>
+              <div class="gate"><b>重命名</b><span class="gate-detail">a.dat → b.dat</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+              <div class="gate"><b>提交作业</b><span class="gate-detail">sbatch</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+              <div class="gate"><b>写入模块</b><span class="gate-detail">energy</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+              <div class="gate"><b>加载模块</b><span class="gate-detail">energy</span><i class="gate-mark">已允许</i><span class="gate-actions"><em class="no">拒绝</em><em class="yes">允许<i class="gate-dot"></i></em></span></div>
+            </div>
+          </div>
+        ) : variant === 'jobs' ? (
+          <div class="lf-stage">
+            <pre class="lab-script"><span class="c">#!/bin/bash</span>
+<span class="c">#SBATCH --job-name=lj-melt</span>
+<span class="c">#SBATCH --partition=compute</span>
+<span>cd ~/lj-melt</span>
+<span>lmp -in in.lammps</span></pre>
+            <div class="lf-modal">
+              <h4>提交作业</h4>
+              <p>AI 请求提交 run.slurm。分区、节点数和每节点任务数可以改，以确认后的 sbatch 为准。</p>
+              <div class="ask-fields">
+                <label>分区<span>compute</span></label>
+                <label>节点数<span>1</span></label>
+                <label>每节点任务数<span>4</span></label>
+              </div>
+              <p class="sbatch">sbatch -D ~/lj-melt -J lj-melt -p compute --ntasks-per-node 4 -N 1 ~/lj-melt/run.slurm</p>
+              <div class="lf-actions">
+                <span class="lf-btn">拒绝</span>
+                <span class="lf-btn lf-save">提交</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="lf-split">
+            <div class="lf-editor" aria-hidden="true">
+              <div class="lf-gutter">
+                {lines.map((_, i) => <div>{i + 1}</div>)}
+              </div>
+              <pre class="lf-code">{lines.map((line) => <div class={line.startsWith('@') ? 'c' : ''}>{line || ' '}</div>)}</pre>
+            </div>
+            <div class="lf-view">
+              <Charts kind="curve" />
+              <span class="lf-caption">energy.xvg · 曲线</span>
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+
+    {variant === 'overview' && (
+      <aside class="lf-rail">
+        <h4>普通后台</h4>
+        <div class="lf-job">
+          <b>lj-melt</b>
+          <span>已结束</span>
+          <p style="margin-top:6px;color:#8c8c8c;">bash run.sh</p>
+        </div>
+      </aside>
+    )}
+
+    {variant === 'jobs' && (
+      <aside class="lf-rail lab-rail">
+        <h4>普通后台</h4>
+        <div class="lf-job">
+          <b>lj-melt</b>
+          <span>已结束</span>
+          <p>bash run.sh</p>
+        </div>
+        <h4>Slurm 作业</h4>
+        <div class="field"><label>分区</label><div>compute</div></div>
+        <div class="field"><label>节点 / 每节点任务</label><div>1 / 4</div></div>
+        <table class="job-table">
+          <thead><tr><th>作业号</th><th>名称</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td>2418</td><td>lj-melt</td><td><span class="run">运行中</span></td></tr>
+            <tr><td>2411</td><td>equil</td><td><span class="done">已完成</span></td></tr>
+          </tbody>
+        </table>
+      </aside>
+    )}
+
+    {variant === 'ai' && (
+      <aside class="lf-ai">
+        <header>AI 助手</header>
+        <div class="bubble me">把 in.lammps 改成 NVT。</div>
+        <div class="bubble">每一步都等你点允许。</div>
+        <p class="lf-note">researcher · 区外只读 · 没有终端</p>
+      </aside>
+    )}
+  </div>
+</div>

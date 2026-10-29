@@ -1,0 +1,51 @@
+---
+import Footer from './Footer.astro';
+---
+
+<section class="page section" id="trial">
+  <div class="wrap">
+    <div class="trial-card">
+      <div>
+        <p class="kicker">使用</p>
+        <h2>在任何节点上，三行就够。</h2>
+        <p>启动后，即刻进入工作台。</p>
+        <p>i min lab 最小化的工作台</p>
+      </div>
+      <div>
+        <pre class="term" id="trial-command"><span class="prompt">$ </span><span class="cmd">wget http://download.iminlab.net/iminlab</span>
+<span class="prompt">$ </span><span class="cmd">chmod +x ./iminlab</span>
+<span class="prompt">$ </span><span class="cmd">./iminlab</span></pre>
+        <div class="term-bar">
+          <button class="btn line" id="copy-trial" type="button">复制命令</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Footer />
+</section>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#copy-trial');
+  const text = `wget http://download.iminlab.net/iminlab
+chmod +x ./iminlab
+./iminlab`;
+  if (button) button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = text;
+      document.body.append(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+    const previous = button.textContent;
+    button.textContent = '已复制';
+    button.classList.add('is-done');
+    window.setTimeout(() => {
+      button.textContent = previous;
+      button.classList.remove('is-done');
+    }, 1600);
+  });
+</script>

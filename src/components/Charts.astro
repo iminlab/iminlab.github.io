@@ -1,0 +1,61 @@
+---
+interface Props {
+  kind: 'curve' | 'atoms' | 'field';
+}
+const { kind } = Astro.props;
+---
+
+{kind === 'curve' && (
+  <svg viewBox="0 0 280 160" role="img" aria-label="势能随时间下降的曲线">
+    <line x1="32" y1="16" x2="32" y2="128" stroke="#f0f0f0" />
+    <line x1="32" y1="128" x2="264" y2="128" stroke="#f0f0f0" />
+    <polyline
+      fill="rgba(22,119,255,0.12)"
+      stroke="none"
+      points="32,46 58,58 84,52 110,70 136,64 162,86 188,78 214,96 240,90 264,108 264,128 32,128"
+    />
+    <polyline
+      fill="none"
+      stroke="#1677ff"
+      stroke-width="2"
+      points="32,46 58,58 84,52 110,70 136,64 162,86 188,78 214,96 240,90 264,108"
+    />
+    <text x="40" y="28" fill="#8c8c8c" font-size="10">Potential (kJ/mol)</text>
+    <text x="196" y="148" fill="#8c8c8c" font-size="10">Time (ps)</text>
+  </svg>
+)}
+
+{kind === 'atoms' && (
+  <svg viewBox="0 0 280 160" role="img" aria-label="几个原子组成的三维结构示意">
+    <g stroke="#d6e4ff" stroke-width="3">
+      <line x1="92" y1="78" x2="138" y2="58" />
+      <line x1="138" y1="58" x2="176" y2="86" />
+      <line x1="138" y1="58" x2="150" y2="112" />
+      <line x1="92" y1="78" x2="118" y2="118" />
+      <line x1="176" y1="86" x2="206" y2="64" />
+    </g>
+    <circle cx="92" cy="78" r="18" fill="#1677ff" />
+    <circle cx="138" cy="58" r="14" fill="#69b1ff" />
+    <circle cx="176" cy="86" r="16" fill="#fa8c16" />
+    <circle cx="150" cy="112" r="11" fill="#95de64" />
+    <circle cx="118" cy="118" r="9" fill="#b37feb" />
+    <circle cx="206" cy="64" r="10" fill="#1677ff" />
+  </svg>
+)}
+
+{kind === 'field' && (
+  <svg viewBox="0 0 280 160" role="img" aria-label="器件截面上的场分布示意">
+    <defs>
+      <linearGradient id="field" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#fff1b8" />
+        <stop offset="0.45" stop-color="#ffd591" />
+        <stop offset="1" stop-color="#1677ff" />
+      </linearGradient>
+    </defs>
+    <rect x="36" y="28" width="208" height="104" rx="4" fill="url(#field)" />
+    <rect x="108" y="28" width="64" height="10" fill="#434343" />
+    <path d="M36 78h208" stroke="#fff" stroke-opacity="0.55" fill="none" />
+    <path d="M36 96c40-16 70 10 110-6 28-12 48-8 98 4" stroke="#fff" stroke-opacity="0.8" fill="none" />
+    <text x="44" y="148" fill="#8c8c8c" font-size="10">.tdr · 场分布</text>
+  </svg>
+)}

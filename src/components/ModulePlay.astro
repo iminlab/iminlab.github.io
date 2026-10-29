@@ -1,0 +1,109 @@
+---
+import Charts from './Charts.astro';
+---
+
+<div class="mod-stage" aria-hidden="true">
+  <div class="spin-mask"><i class="spin"></i></div>
+  <header class="md-bar">
+    <strong>工作台</strong>
+    <span class="md-grow"></span>
+    <span>researcher</span>
+    <span class="md-btn">AI 助手</span>
+    <span class="md-btn">退出</span>
+  </header>
+  <div class="md-body">
+    <div class="md-work">
+      <div class="md-tabs">
+        <span class="md-tab md-tab-xvg on">energy.xvg</span>
+        <span class="md-tab md-tab-png">plot.png</span>
+        <span class="md-tab md-tab-tar">data.tar.gz</span>
+        <span class="md-tab md-extra">刚加载</span>
+      </div>
+      <div class="md-scenes">
+        <div class="md-scene xvg">
+          <div class="md-split">
+            <pre class="md-code"><span>@ title "Potential Energy"</span>
+<span>@ xaxis label "Time (ps)"</span>
+<span>0.0   -12480.2</span>
+<span>0.2   -12510.8</span>
+<span>0.4   -12495.1</span>
+<span>1.0   -12548.0</span></pre>
+            <div class="md-view">
+              <Charts kind="curve" />
+            </div>
+          </div>
+        </div>
+        <div class="md-scene png">
+          <div class="md-deny">
+            <strong>不支持此格式</strong>
+            <span>plot.png</span>
+          </div>
+          <div class="md-shot">
+            <div class="md-photo"></div>
+            <span>plot.png · 1024×768</span>
+          </div>
+        </div>
+        <div class="md-scene tar">
+          <pre class="md-archive"><span>data.tar.gz</span>
+<span>├── README.txt</span>
+<span>├── traj.xtc</span>
+<span>└── topol.tpr</span></pre>
+        </div>
+      </div>
+    </div>
+    <aside class="md-ai">
+      <header>AI 助手</header>
+      <div class="md-bubble me md-q-file">我想查看这个文件</div>
+      <div class="md-bubble ai">写一个 energy 模块，用 ECharts 在旁边画曲线。</div>
+      <p class="md-note">modules/energy · engines.iminlab ^1 · echarts</p>
+      <div class="md-bubble me md-q-png">我想查看这个图片</div>
+      <div class="md-bubble ai md-reply-png">写一个 image 模块，在工作台里显示这张图片。</div>
+      <p class="md-note md-note-png">modules/image · engines.iminlab ^1</p>
+      <div class="md-bubble me md-q-tar">我想查看这个压缩包</div>
+    </aside>
+    <div class="md-modal md-write">
+      <h3>写入模块</h3>
+      <p>新建 energy/package.json 和 index.js，确认后直接写入磁盘。</p>
+      <pre class="md-snippet">{`{
+  "name": "energy",
+  "engines": { "iminlab": "^1" },
+  "iminlab": { "libs": ["echarts"] }
+}`}</pre>
+      <div class="md-actions">
+        <span class="md-btn">拒绝</span>
+        <span class="md-btn md-ok md-ok-write">允许</span>
+      </div>
+    </div>
+    <div class="md-modal md-load">
+      <h3>加载模块</h3>
+      <p>在页面中加载 energy。模块会在浏览器里运行，确认代码可信后再允许。</p>
+      <div class="md-actions">
+        <span class="md-btn">拒绝</span>
+        <span class="md-btn md-ok md-ok-load">允许</span>
+      </div>
+    </div>
+    <div class="md-modal md-write-img">
+      <h3>写入模块</h3>
+      <p>新建 image/package.json 和 index.js，确认后直接写入磁盘。</p>
+      <pre class="md-snippet">{`{
+  "name": "image",
+  "engines": { "iminlab": "^1" },
+  "iminlab": { "view": "png" }
+}`}</pre>
+      <div class="md-actions">
+        <span class="md-btn">拒绝</span>
+        <span class="md-btn md-ok md-ok-write-img">允许</span>
+      </div>
+    </div>
+    <div class="md-modal md-load-img">
+      <h3>加载模块</h3>
+      <p>在页面中加载 image。模块会在浏览器里运行，确认代码可信后再允许。</p>
+      <div class="md-actions">
+        <span class="md-btn">拒绝</span>
+        <span class="md-btn md-ok md-ok-load-img">允许</span>
+      </div>
+    </div>
+    <i class="md-cursor"></i>
+    <i class="md-cursor md-cursor-img"></i>
+  </div>
+</div>

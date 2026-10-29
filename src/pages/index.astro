@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import WorkspaceReplay from '../components/WorkspaceReplay.astro';
+import Binary from '../components/Binary.astro';
+import Shift from '../components/Shift.astro';
+import Highlights from '../components/Highlights.astro';
+import Disciplines from '../components/Disciplines.astro';
+import Trial from '../components/Trial.astro';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>iminlab — 最精简的实验室</title>
+    <meta
+      name="description"
+      content="iminlab 是跑在本机和集群上的计算工作台。一个二进制，编辑器旁看学科结果，AI 在你的权限内改文件、写预览、提交作业。"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <Nav />
+    <main class="deck" id="deck">
+      <Hero />
+      <Binary />
+      <WorkspaceReplay />
+      <Shift />
+      <Highlights />
+      <Disciplines />
+      <Trial />
+    </main>
+    <script>
+      import '../scripts/deck.ts';
+    </script>
+  </body>
+</html>

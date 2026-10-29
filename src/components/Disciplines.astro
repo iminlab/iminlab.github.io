@@ -1,0 +1,37 @@
+---
+const formats = [
+  { ext: '.in  /  log', name: 'LAMMPS 输入与日志', view: '命令诊断，热力学曲线' },
+  { ext: 'data  /  dump', name: 'LAMMPS 结构与轨迹', view: '三维结构，轨迹回放' },
+  { ext: '.xvg  /  轨迹', name: 'GROMACS', view: '能量曲线，轨迹回放' },
+  { ext: '.pdb  .gro  .xyz', name: '分子坐标', view: '三维结构' },
+  { ext: '.plt', name: 'Sentaurus 曲线', view: 'DF-ISE 曲线' },
+  { ext: '.tdr', name: 'Sentaurus 场', view: '结构与场分布' },
+  { ext: 'bash  /  sbatch', name: '作业脚本', view: '本机后台，或 Slurm 队列' },
+  { ext: 'modules/', name: '你自己的格式', view: '一句话写成预览模块' },
+];
+---
+
+<section class="page section band" id="disciplines">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">学科</p>
+      <h2>这些格式打开就能预览和编辑。</h2>
+      <p>在页面上写输入、看轨迹、交作业、分子模拟、器件仿真，以及还没有现成查看器的文件。</p>
+    </div>
+    <div class="catalog">
+      {formats.map((item) => (
+        <article class="fmt">
+          <code>{item.ext}</code>
+          <h3>{item.name}</h3>
+          <p>{item.view}</p>
+        </article>
+      ))}
+      <article class="fmt wide">
+        <h3>预览不够用时</h3>
+        <p>
+          助手按你的描述编写模块，确认后实时加载。ECharts 画你的表，Three.js 看网格，Phylocanvas 画树。已有的曲线和三维还在，新标签排在旁边。
+        </p>
+      </article>
+    </div>
+  </div>
+</section>

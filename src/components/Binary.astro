@@ -1,0 +1,107 @@
+---
+const glyphs: Record<string, string[]> = {
+  i: ['█', '█', '█', '█', '█'],
+  "'": ['▀', ' ', ' ', ' ', ' '],
+  m: ['█   █', '██ ██', '█ █ █', '█   █', '█   █'],
+  n: ['█   █', '██  █', '█ █ █', '█  ██', '█   █'],
+  l: ['█  ', '█  ', '█  ', '█  ', '███'],
+  a: [' ███ ', '█   █', '█████', '█   █', '█   █'],
+  b: ['████ ', '█   █', '████ ', '█   █', '████ '],
+  ' ': ['  ', '  ', '  ', '  ', '  '],
+};
+
+function bannerLines(text: string) {
+  const rows = Array.from({ length: 5 }, () => [] as string[]);
+  let first = true;
+  for (const ch of text) {
+    const glyph = glyphs[ch] ?? glyphs[' '];
+    const width = Math.max(...glyph.map((row) => [...row].length));
+    if (!first) for (const row of rows) row.push(' ');
+    first = false;
+    glyph.forEach((line, i) => {
+      const cells = [...line];
+      while (cells.length < width) cells.push(' ');
+      rows[i].push(...cells);
+    });
+  }
+  return rows.map((row) => row.join(''));
+}
+
+function scale6(v: number) {
+  return Math.max(0, Math.min(5, Math.round(v * 5)));
+}
+
+function hsv(h: number, s: number, v: number) {
+  const i = Math.floor(h * 6);
+  const f = h * 6 - i;
+  const p = v * (1 - s);
+  const q = v * (1 - f * s);
+  const t = v * (1 - (1 - f) * s);
+  return [
+    [v, t, p],
+    [q, v, p],
+    [p, v, t],
+    [p, q, v],
+    [t, p, v],
+    [v, p, q],
+  ][i % 6];
+}
+
+function color256(t: number) {
+  const clamped = Math.max(0, Math.min(1, t));
+  let h = 0.5 + clamped * 0.62;
+  if (h >= 1) h -= 1;
+  const [r, g, b] = hsv(h, 0.72, 1);
+  return 16 + 36 * scale6(r) + 6 * scale6(g) + scale6(b);
+}
+
+function rgb(n: number) {
+  const cube = n - 16;
+  const r = Math.floor(cube / 36);
+  const g = Math.floor((cube % 36) / 6);
+  const b = cube % 6;
+  const channel = (v: number) => (v === 0 ? 0 : 55 + v * 40);
+  return `rgb(${channel(r)},${channel(g)},${channel(b)})`;
+}
+
+function paint(text: string) {
+  const chars = [...text];
+  const denom = Math.max(1, chars.length - 1);
+  let html = '';
+  let i = 0;
+  while (i < chars.length) {
+    const color = chars[i] === ' ' ? '' : rgb(color256(i / denom));
+    let j = i + 1;
+    while (j < chars.length && (chars[j] === ' ' ? '' : rgb(color256(j / denom))) === color) j += 1;
+    const slice = chars.slice(i, j).join('').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    html += color ? `<span style="color:${color}">${slice}</span>` : slice;
+    i = j;
+  }
+  return html;
+}
+
+const commands = ['wget http://download.iminlab.net/iminlab', 'chmod +x ./iminlab', './iminlab'];
+const slogan = bannerLines("i'm in lab").map(paint);
+const url = paint('https://127.0.0.1:2002/?token=••••••••');
+---
+
+<section class="page section">
+  <div class="wrap">
+    <article class="hl">
+      <div class="hl-copy">
+        <p class="kicker">独立二进制</p>
+        <h2>一个文件，没有前置依赖, 小于10MB</h2>
+        <p>
+          下载、运行。编辑器、查看器和作业面板都在这个二进制里，不需要任何依赖，也不需要数据库。
+        </p>
+      </div>
+      <div class="hl-visual">
+        <pre class="term boot" aria-hidden="true"><span class="boot-line" style="--d:0.45s">$ {commands[0]}</span>
+<span class="boot-line" style="--d:1.45s">$ {commands[1]}</span>
+<span class="boot-line" style="--d:2.25s">$ {commands[2]}</span>
+<span class="banner">{slogan.map((row, i) => <span class="banner-row" style={`--d:${2.9 + i * 0.08}s`} set:html={row} />)}</span>
+<span class="boot-line boot-url" style="--d:3.7s" set:html={url}></span></pre>
+      </div>
+    </article>
+  </div>
+</section>
